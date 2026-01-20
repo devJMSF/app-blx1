@@ -30,7 +30,7 @@ def listar_usuario(db: Session = Depends(database.get_bd)):
     usuarios = RepositorioUsuario(db).listar()
     return usuarios
 
-@app.post("/usuario",status_code=status.HTTP_201_CREATED)
+@app.post("/usuario",status_code=status.HTTP_201_CREATED, response_model=schemas_usuario.UsuarioSimples)
 def criar_usuario(usuario: schemas_usuario.Usuario, db: Session = Depends(database.get_bd)):
     usuario_criado = RepositorioUsuario(db).criar(usuario)
     return usuario_criado

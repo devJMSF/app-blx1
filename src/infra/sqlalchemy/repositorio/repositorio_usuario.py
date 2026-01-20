@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from sqlalchemy import select
 from src.schemas import schemas_usuario
 from src.infra.sqlalchemy.models import models
 
@@ -20,9 +21,10 @@ class RepositorioUsuario():
         self.db.refresh(db_usuario)
         return db_usuario
 
-    def listar(self):
-        db_usuarios = self.db.query(models.Usuario).all()
-        return db_usuarios
+    def listar(self): 
+        smtm = select(models.Usuario) 
+        usuarios = self.db.execute(smtm).scalars().all() 
+        return usuarios
 
     def editar(self):
         pass

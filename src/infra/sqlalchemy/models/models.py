@@ -15,8 +15,6 @@ class Usuario(Base):
 
     produtos = relationship("Produto", back_populates="usuario")
 
-
-
 class Produto(Base):
     __tablename__ = "produto"
 

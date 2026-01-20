@@ -1,4 +1,4 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from src.schemas import schemas_produto
 from src.infra.sqlalchemy.models import models
 
@@ -11,7 +11,9 @@ class RepositorioProduto():
                                     nome=produto.nome,
                                     detalhes=produto.detalhes,
                                     preco=produto.preco,
-                                    disponivel=produto.disponivel
+                                    disponivel=produto.disponivel,
+                                    tamanhos=produto.tamanhos,
+                                    usuario_id=produto.usuario_id,
         )
         self.db.add(db_produto)
         self.db.commit()
@@ -19,7 +21,7 @@ class RepositorioProduto():
         return db_produto
 
     def listar(self):
-        produtos = self.db.query(models.Produto).all()
+        produtos = self.db.query(models.Produto).options(joinedload(models.Produto.usuario)).all()
         return produtos
 
     def excluir(self):
