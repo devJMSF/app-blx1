@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List
 
 class Produto(BaseModel):
     id: Optional[int] = None
@@ -7,6 +7,7 @@ class Produto(BaseModel):
     detalhes: str
     preco: float
     disponivel: bool = False
+    tamanho: str = False
 
     class Config:
         from_attribute = True
@@ -24,6 +25,7 @@ class Usuario(BaseModel):
     idade: int
     data_nascimento: str
     telefone: str
+    # produtos: List[produtos] = []
 
     class Config:
         from_attribute = True
