@@ -10,6 +10,8 @@ class Usuario(Base):
     idade = Column(Integer)
     data_nascimento = Column(String)
     telefone = Column(String)
+    email = Column(String)
+    senha = Column(String) 
 
     produtos = relationship("Produto", back_populates="usuario")
 

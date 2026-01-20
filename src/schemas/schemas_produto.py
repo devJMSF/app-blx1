@@ -19,13 +19,4 @@ class ProdutoSimples(BaseModel):
     class Config:
         from_attribute = True
 
-class Usuario(BaseModel):
-    id: Optional[int] = None
-    nome: str
-    idade: int
-    data_nascimento: str
-    telefone: str
-    # produtos: List[produtos] = []
 
-    class Config:
-        from_attribute = True
