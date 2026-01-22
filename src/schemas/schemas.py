@@ -1,0 +1,54 @@
+from pydantic import BaseModel
+from typing import Optional, List
+
+class ProdutoSimples(BaseModel):
+    id: Optional[int] = None
+    nome: str
+    preco: float
+    
+    class Config:
+        from_attribute  = True
+
+class Usuario(BaseModel):
+    id: Optional[int] = None
+    nome: str
+    idade: int
+    data_nascimento: str
+    telefone: str
+    email: str
+    senha: str
+    produtos: List[ProdutoSimples] = []
+
+    class Config:
+        from_attribute = True
+
+
+class UsuarioSimples(BaseModel):
+    id: Optional[int] = None
+    nome: str
+    email: str
+
+    class Config:
+        from_attribute = True
+
+class Produto(BaseModel):
+    id: Optional[int] = None
+    nome: str
+    detalhes: str
+    preco: float
+    disponivel: bool = False
+    tamanhos: str
+    usuario_id: Optional[int] = None
+    usuario: Optional[UsuarioSimples] = None
+
+    class Config:
+        from_attribute  = True
+
+
+
+
+
+
+
+
+

@@ -1,12 +1,13 @@
 from sqlalchemy.orm import Session, joinedload
-from src.schemas import schemas_produto
+from sqlalchemy import update, delete
+from src.schemas import schemas
 from src.infra.sqlalchemy.models import models
 
 class RepositorioProduto():
     def __init__(self, db: Session):
-        self.db = db
+        self.session = db
 
-    def criar(self, produto: schemas_produto.Produto):
+    def criar(self, produto: schemas.Produto):
         db_produto = models.Produto(
                                     nome=produto.nome,
                                     detalhes=produto.detalhes,
@@ -15,18 +16,29 @@ class RepositorioProduto():
                                     tamanhos=produto.tamanhos,
                                     usuario_id=produto.usuario_id,
         )
-        self.db.add(db_produto)
-        self.db.commit()
-        self.db.refresh(db_produto)
+        self.session.add(db_produto)
+        self.session.commit()
+        self.session.refresh(db_produto)
         return db_produto
 
     def listar(self):
-        produtos = self.db.query(models.Produto).options(joinedload(models.Produto.usuario)).all()
+        produtos = self.session.query(models.Produto).options(joinedload(models.Produto.usuario)).all()
         return produtos
-
-    def excluir(self):
-        pass
-
-    def editar(self):
-        pass
+ 
+    def editar(self, id: int, produto: schemas.Produto):
+        editar_produto = update(models.Produto).where(models.Produto.id == id).values(
+                                nome=produto.nome,
+                                detalhes=produto.detalhes,
+                                preco=produto.preco,
+                                disponivel=produto.disponivel,
+                                tamanhos=produto.tamanhos)
+        self.session.execute(editar_produto)
+        self.session.commit()
+        return produto    
+    
+    def excluir(self, id: int):
+        deletar_produto = delete(models.Produto).where(models.Produto.id == id)
+        self.session.execute(deletar_produto)
+        self.session.commit()
+        return {"mensagem": "produto deletado!"}
 
