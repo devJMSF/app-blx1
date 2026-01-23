@@ -4,8 +4,8 @@ from src.schemas import schemas
 from src.infra.sqlalchemy.models import models
 
 class RepositorioProduto():
-    def __init__(self, db: Session):
-        self.session = db
+    def __init__(self, session: Session):
+        self.session = session
 
     def criar(self, produto: schemas.Produto):
         db_produto = models.Produto(
@@ -37,13 +37,13 @@ class RepositorioProduto():
         return produto    
     
     def excluir(self, id: int):
-        deletar_produto = delete(models.Produto).where(models.Produto.id == id)
-        self.session.execute(deletar_produto)
+        query = delete(models.Produto).where(models.Produto.id == id)
+        self.session.execute(query)
         self.session.commit()
         return {"mensagem": "produto deletado!"}
 
     def buscar_item(self, id: int):
-        consulta_id = select(models.Produto).where(models.Produto.id == id)
-        consulta_produto = self.session.execute(consulta_id).first()
+        query = select(models.Produto).where(models.Produto.id == id)
+        consulta_produto = self.session.execute(query).first()
         return consulta_produto
 
