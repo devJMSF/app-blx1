@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session, joinedload
-from sqlalchemy import update, delete
+from sqlalchemy import update, delete, select
 from src.schemas import schemas
 from src.infra.sqlalchemy.models import models
 
@@ -41,4 +41,9 @@ class RepositorioProduto():
         self.session.execute(deletar_produto)
         self.session.commit()
         return {"mensagem": "produto deletado!"}
+
+    def buscar_item(self, id: int):
+        consulta_id = select(models.Produto).where(models.Produto.id == id)
+        consulta_produto = self.session.execute(consulta_id).first()
+        return consulta_produto
 

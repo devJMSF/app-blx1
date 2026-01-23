@@ -44,6 +44,20 @@ class Produto(BaseModel):
     class Config:
         from_attribute  = True
 
+class Pedido(BaseModel):
+    id: Optional[int] = None
+    quantidade: int
+    local_entrega: Optional[str]
+    tipo_entrega = str
+    observacao: Optional[str] = "sem observacoes"
+
+    usuario_id: Optional[int] = None
+    produto_id: Optional[int] = None
+
+    usuario: Optional[UsuarioSimples] = None
+    produto: Optional[ProdutoSimples] = None
+    
+
 
 
 

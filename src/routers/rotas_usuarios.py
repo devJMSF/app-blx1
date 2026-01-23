@@ -1,5 +1,4 @@
-from fastapi import APIRouter
-from fastapi import Depends, status
+from fastapi import APIRouter, Depends, status, HTTPException
 from typing import List
 from sqlalchemy.orm import Session
 from src.infra.sqlalchemy.config import database
@@ -30,3 +29,10 @@ def atualizar_usuario(id: int, usuario: schemas.Usuario, db: Session = Depends(d
 def deletar_produtos(id: int, db: Session = Depends(database.get_bd)):
     usuario_excluido = RepositorioUsuario(db).excluir(id)
     return usuario_excluido
+
+@router.get("/usuario/{id}")
+def consultar_usuario(id: int, db: Session = Depends(database.get_bd)):
+    localizar_usuario = RepositorioUsuario(db).buscar_usuario(id)
+    if not localizar_usuario:
+        raise HTTPException(status_code=404, detail=f"não existe usuario com o id [{id}]!")
+    return localizar_usuario

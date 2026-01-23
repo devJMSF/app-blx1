@@ -43,3 +43,8 @@ class RepositorioUsuario():
         self.session.execute(excluir_usuario)
         self.session.commit()
         return id
+    
+    def buscar_usuario(self, id: int):
+        localizar_usuario = select(models.Usuario).where(models.Usuario.id == id)
+        consulta_produto = self.session.execute(localizar_usuario).first()
+        return consulta_produto
