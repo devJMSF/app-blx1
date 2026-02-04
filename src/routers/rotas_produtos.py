@@ -17,8 +17,6 @@ def listar_produtos(db: Session = Depends(database.get_bd)):
 @router.get("/produto/{id}")
 def consultar_produto(id: int, db: Session = Depends(database.get_bd)):
     localizar_produto = RepositorioProduto(db).buscar_item(id)
-    if not localizar_produto:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"não existe produto com o id [{id}]!") 
     return localizar_produto
 
 @router.post("/produto", status_code=status.HTTP_201_CREATED)

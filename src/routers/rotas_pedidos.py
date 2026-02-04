@@ -14,11 +14,8 @@ def fazer_pedido(pedido: schemas.Pedido, db: Session = Depends(database.get_bd))
 
 @router.get("/pedido/{id}")
 def exibir_pedido(id: int, db: Session = Depends(database.get_bd)):
-    try:
-        pedido = RepositorioPedido(db).buscar_por_id(id)
-        return pedido
-    except:
-        raise HTTPException(status_code=404, detail=f"não existe pedido com o id [{id}]")
+    pedido = RepositorioPedido(db).buscar_por_id(id)
+    return pedido
 
 @router.get("/pedidos/{usuario_id}/compras", response_model=List[schemas.Pedido])
 def listar_pedidos(usuario_id: int, db: Session = Depends(database.get_bd)):
@@ -36,7 +33,7 @@ def listar_vendas(usuario_id: int, db: Session = Depends(database.get_bd)):
     return pedido_id
 
 
-@router.put("/pedido/{id}", response_model=schemas.Pedido)
+@router.put("/pedido/{id}", response_model=schemas.PedidoSimples)
 def atualizar_pedido(id: int, pedido: schemas.Pedido, db: Session = Depends(database.get_bd)):
     RepositorioPedido(db).editar(id, pedido)
     pedido.id = id

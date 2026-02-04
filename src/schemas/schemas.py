@@ -31,6 +31,10 @@ class UsuarioSimples(BaseModel):
     class Config:
         from_attribute = True
 
+class UsuarioLogar(BaseModel):
+    email: str
+    senha: str
+
 class Produto(BaseModel):
     id: Optional[int] = None
     nome: str
@@ -59,6 +63,17 @@ class Pedido(BaseModel):
 
     class Config:
         from_attribute  = True
+
+class PedidoSimples(BaseModel):
+    id: Optional[int] = None
+    quantidade: int
+    local_entrega: Optional[str]
+    tipo_entrega: str
+    observacao: Optional[str] = "sem observacoes"
+
+    usuario_id: Optional[int] = None
+    produto_id: Optional[int] = None
+
     
 
 
