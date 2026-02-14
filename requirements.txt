@@ -3,3 +3,4 @@ passlib==1.7.4
 pydantic==2.12.5
 python_jose==3.5.0
 uvicorn[standard]==0.30.6
+sqlalchemy==2.0.36
