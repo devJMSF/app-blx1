@@ -25,5 +25,5 @@ app.include_router(rotas_produtos.router)
 app.include_router(rotas_usuarios.router)
 
 # rotas pedidos
-app.include_router(rotas_pedidos.router)
+app.include_router(rotas_pedidos.router, )
 

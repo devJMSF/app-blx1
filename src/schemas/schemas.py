@@ -7,7 +7,7 @@ class ProdutoSimples(BaseModel):
     preco: float
     
     class Config:
-        from_attribute  = True
+        from_attributes  = True
 
 class Usuario(BaseModel):
     id: Optional[int] = None
@@ -20,7 +20,7 @@ class Usuario(BaseModel):
     produtos: List[ProdutoSimples] = []
 
     class Config:
-        from_attribute = True
+        from_attributes = True
 
 
 class UsuarioSimples(BaseModel):
@@ -29,11 +29,15 @@ class UsuarioSimples(BaseModel):
     email: str
 
     class Config:
-        from_attribute = True
+        from_attributes = True
 
 class UsuarioLogar(BaseModel):
     email: str
-    senha: str
+    senha: str  
+
+class UsuarioLogado(BaseModel):
+    usuario: UsuarioSimples
+    access_token: str
 
 class Produto(BaseModel):
     id: Optional[int] = None
@@ -46,7 +50,7 @@ class Produto(BaseModel):
     usuario: Optional[UsuarioSimples] = None
 
     class Config:
-        from_attribute  = True
+        from_attributes  = True
 
 class Pedido(BaseModel):
     id: Optional[int] = None
@@ -62,7 +66,7 @@ class Pedido(BaseModel):
     produto: Optional[ProdutoSimples] = None
 
     class Config:
-        from_attribute  = True
+        from_attributes  = True
 
 class PedidoSimples(BaseModel):
     id: Optional[int] = None

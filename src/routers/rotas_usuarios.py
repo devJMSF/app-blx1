@@ -4,11 +4,13 @@ from sqlalchemy.orm import Session
 from src.infra.sqlalchemy.config import database
 from src.infra.sqlalchemy.repositorio.repositorio_usuario import RepositorioUsuario
 from src.schemas import schemas
-from src.infra.providers import hash_providers
+from src.infra.providers import hash_providers, token_providers
+from src.routers.utils import rotas_utils
 
 router = APIRouter()
 
 # =================USUARIOS====================
+
 
 @router.get("/usuarios",status_code=status.HTTP_200_OK, response_model=List[schemas.Usuario])
 def listar_usuario(db: Session = Depends(database.get_bd)):
@@ -20,6 +22,10 @@ def criar_usuario(usuario: schemas.Usuario, db: Session = Depends(database.get_b
     usuario.senha = hash_providers.gerar_hash(usuario.senha)
     usuario_criado = RepositorioUsuario(db).criar(usuario)
     return usuario_criado
+
+@router.get("/usuario/identificar_usuario", response_model=schemas.UsuarioSimples)
+def identificar_usuario(usuario: schemas.Usuario = Depends(rotas_utils.obter_usuario_logado)):
+    return usuario
 
 @router.put("/usuario/{id}", status_code=status.HTTP_200_OK)
 def atualizar_usuario(id: int, usuario: schemas.Usuario, db: Session = Depends(database.get_bd)):
@@ -39,7 +45,7 @@ def consultar_usuario(id: int, db: Session = Depends(database.get_bd)):
         raise HTTPException(status_code=404, detail=f"não existe usuario com o id [{id}]!")
     return localizar_usuario
 
-@router.post("/usuario/logar", response_model=schemas.UsuarioSimples)
+@router.post("/usuario/logar")
 def logar(login: schemas.UsuarioLogar, session: Session = Depends(database.get_bd)):
     email = login.email
     senha = login.senha
@@ -54,4 +60,9 @@ def logar(login: schemas.UsuarioLogar, session: Session = Depends(database.get_b
     if not validar_senha:
         raise HTTPException(status_code=404, detail="Usuario ou senha incorreto!")
     
-    return usuario
+    # gerar TOKEN
+
+    token = token_providers.gerar_token_acesso({"sub": usuario.email})
+
+    return schemas.UsuarioLogado(usuario=usuario, access_token=token)
+
